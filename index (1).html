@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Кафе де Пари Видное</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@400;500;700&display=swap">
+<style>
+/* Layout: banquet-hall page — event type hero, occasions grid, request builder that composes a booking message, visit block. Ink navy + blush + brass. */
+:root{
+  --bg:#F6F2EF;
+  --surface:#FFFFFF;
+  --fg:#1C2033;
+  --muted:#5E6073;
+  --line:#E2DAD4;
+  --ink:#24305E;
+  --blush:#F1DCD6;
+  --brass:#9C7A3C;
+  --display:"Prata", Georgia, "Times New Roman", serif;
+  --body:"Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12141E;--surface:#1B1E2C;--fg:#EEEAE6;--muted:#A6A6B6;--line:#2E3244;
+  --ink:#A9B6EC;--blush:#3B2A2E;--brass:#D6B26C;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12141E;--surface:#1B1E2C;--fg:#EEEAE6;--muted:#A6A6B6;--line:#2E3244;
+  --ink:#A9B6EC;--blush:#3B2A2E;--brass:#D6B26C;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0}
+a{color:var(--ink)}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+
+.demo{background:var(--ink);color:var(--bg);font-size:13px}
+.demo .wrap{padding-block:8px}
+
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:18px;flex-wrap:wrap}
+.logo{font-family:var(--display);font-size:24px;color:var(--ink);letter-spacing:.02em}
+.callbtn{background:var(--fg);color:var(--bg);text-decoration:none;padding:10px 16px;border-radius:999px;font-weight:500;font-variant-numeric:tabular-nums}
+
+.hero .wrap{padding-block:40px 56px;display:grid;gap:20px}
+.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--brass);font-weight:700}
+.hero h1{font-size:clamp(38px,6.5vw,72px);line-height:1.06;max-width:14em}
+.hero h1 span{color:var(--ink)}
+.lead{font-size:18px;color:var(--muted);max-width:36em;margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:12px 32px;margin:8px 0 0;padding:0;list-style:none}
+.facts li{display:flex;flex-direction:column;border-left:2px solid var(--brass);padding-left:12px}
+.facts b{font-size:22px;font-variant-numeric:tabular-nums}
+.facts span{font-size:13px;color:var(--muted)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-block;text-decoration:none;padding:12px 18px;border-radius:999px;border:1px solid var(--ink);color:var(--ink);font-weight:500;font:inherit;cursor:pointer;background:none}
+.btn.fill{background:var(--ink);color:var(--bg)}
+
+section{padding-block:52px;border-top:1px solid var(--line)}
+section h2{font-size:clamp(28px,4vw,40px)}
+.sub{color:var(--muted);margin:8px 0 0;max-width:40em}
+
+.occasions{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
+.occ{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.occ h3{font-size:21px}
+.occ p{margin:0;color:var(--muted);font-size:15px}
+.occ .mark{font-family:var(--display);font-size:28px;color:var(--brass);line-height:1}
+
+/* request builder */
+.builder{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;align-items:start}
+form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:16px}
+label{display:grid;gap:6px;font-size:14px;color:var(--muted)}
+select,input,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:8px 14px}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.preview{background:var(--blush);border-radius:14px;padding:22px;display:grid;gap:14px;min-width:0}
+.preview pre{margin:0;white-space:pre-wrap;font-family:var(--body);font-size:15px;line-height:1.5}
+.hint{font-size:13px;color:var(--muted);margin:0}
+
+.visit{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:14px}
+.row{display:grid;grid-template-columns:110px 1fr;gap:12px;margin:0}
+.row dt{color:var(--muted);font-size:14px}
+.row dd{margin:0;font-weight:500;min-width:0}
+.rating{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.rating b{font-family:var(--display);font-size:52px;color:var(--brass);line-height:1}
+.copy{font:inherit;font-size:13px;cursor:pointer;background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:4px 10px;margin-left:6px}
+footer .wrap{padding-block:32px;color:var(--muted);font-size:13px}
+
+@media (max-width:860px){.occasions{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:700px){
+  .builder,.visit{grid-template-columns:1fr}
+  .occasions{grid-template-columns:1fr}
+  .row{grid-template-columns:96px 1fr}
+}
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap">Демо-версия сайта. Меню, фото и цены добавляются после согласования с кафе.</div></div>
+
+<header class="top"><div class="wrap">
+  <div class="logo">Кафе де Пари</div>
+  <a class="callbtn" href="tel:+79774470505">+7 (977) 447-05-05</a>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">Видное · проспект Ленинского Комсомола</div>
+  <h1>Праздник, свадьба или семейный ужин <span>в кафе у дома</span></h1>
+  <p class="lead">«Кафе де Пари» — уютное кафе в Видном, где проводят дни рождения, свадьбы, юбилеи и поминальные обеды. Открыто каждый день до двух ночи.</p>
+  <ul class="facts">
+    <li><b>4,6</b><span>429 оценок на Яндекс Картах</span></li>
+    <li><b>до 02:00</b><span>открыто ежедневно</span></li>
+    <li><b>Банкеты</b><span>бронирование по телефону</span></li>
+  </ul>
+  <div class="cta">
+    <a class="btn fill" href="#request">Собрать заявку на праздник</a>
+    <a class="btn" href="tel:+79774470505">Позвонить</a>
+  </div>
+</div></div>
+
+<section id="events"><div class="wrap">
+  <h2>Что у нас отмечают</h2>
+  <p class="sub">Можно провести любое мероприятие. Расскажите, что планируете, и администратор подберёт зал и меню.</p>
+  <div class="occasions">
+    <div class="occ"><span class="mark">I</span><h3>Дни рождения</h3><p>Для взрослых и детей, небольшой компанией или большим столом.</p></div>
+    <div class="occ"><span class="mark">II</span><h3>Свадьбы</h3><p>Банкет для гостей рядом с домом, без поездки в Москву.</p></div>
+    <div class="occ"><span class="mark">III</span><h3>Юбилеи и корпоративы</h3><p>Праздничное меню и сервировка под ваше количество гостей.</p></div>
+    <div class="occ"><span class="mark">IV</span><h3>Поминальные обеды</h3><p>Спокойная обстановка и внимательная организация. Помогут составить меню.</p></div>
+  </div>
+</div></section>
+
+<section id="request"><div class="wrap">
+  <h2>Заявка на мероприятие за минуту</h2>
+  <p class="sub">Выберите повод, дату и количество гостей. Мы соберём готовое сообщение, которое можно отправить администратору.</p>
+  <div class="builder">
+    <form id="reqForm" novalidate>
+      <div>
+        <label id="typeLbl">Повод</label>
+        <div class="chips" role="group" aria-labelledby="typeLbl" id="typeChips">
+          <button type="button" id="t1" aria-pressed="true">День рождения</button>
+          <button type="button" id="t2" aria-pressed="false">Свадьба</button>
+          <button type="button" id="t3" aria-pressed="false">Юбилей</button>
+          <button type="button" id="t4" aria-pressed="false">Корпоратив</button>
+          <button type="button" id="t5" aria-pressed="false">Поминальный обед</button>
+          <button type="button" id="t6" aria-pressed="false">Ужин</button>
+        </div>
+      </div>
+      <label>Дата<input type="date" id="date"></label>
+      <label>Количество гостей<input type="number" id="guests" min="1" max="200" value="20"></label>
+      <label>Ваше имя<input type="text" id="name" placeholder="Например, Ольга"></label>
+      <label>Пожелания<textarea id="wish" rows="3" placeholder="Детское меню, торт, музыка..."></textarea></label>
+    </form>
+    <div class="preview">
+      <strong>Ваше сообщение</strong>
+      <pre id="msg" aria-live="polite"></pre>
+      <div class="cta">
+        <a class="btn fill" id="waBtn" href="https://wa.me/79774470505" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+        <button class="btn" type="button" id="copyMsg">Скопировать текст</button>
+      </div>
+      <p class="hint">Или позвоните: +7 (977) 447-05-05</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="visit"><div class="wrap">
+  <h2>Как нас найти</h2>
+  <div class="visit">
+    <div class="card">
+      <dl class="row"><dt>Адрес</dt><dd>Видное, просп. Ленинского Комсомола, 46А</dd></dl>
+      <dl class="row"><dt>Телефон</dt><dd>+7 (977) 447-05-05 <button class="copy" id="copyPhone" type="button">Скопировать</button></dd></dl>
+      <dl class="row"><dt>Часы</dt><dd>ежедневно, до 02:00</dd></dl>
+      <div class="cta">
+        <a class="btn fill" href="tel:+79774470505">Забронировать</a>
+        <a class="btn" href="https://yandex.ru/maps/org/kafe_de_pari/1380541415/" target="_blank" rel="noopener">Маршрут</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="rating"><b>4,6</b><span>429 оценок и 186 отзывов</span></div>
+      <p style="margin:0">Гости отмечают у нас праздники и рекомендуют кафе на Яндекс Картах.</p>
+      <div class="cta"><a class="btn" href="https://yandex.ru/maps/org/kafe_de_pari/1380541415/reviews/" target="_blank" rel="noopener">Читать отзывы</a></div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Кафе де Пари · Видное, просп. Ленинского Комсомола, 46А · Демо-версия сайта</div></footer>
+
+<script>
+var type='День рождения';
+var chips=document.querySelectorAll('#typeChips button');
+chips.forEach(function(b){b.addEventListener('click',function(){
+  chips.forEach(function(x){x.setAttribute('aria-pressed','false')});
+  b.setAttribute('aria-pressed','true');type=b.textContent;build();
+});});
+function fmt(d){if(!d)return'дата уточняется';var p=d.split('-');return p[2]+'.'+p[1]+'.'+p[0];}
+function build(){
+  var g=document.getElementById('guests').value||'—';
+  var n=document.getElementById('name').value.trim();
+  var w=document.getElementById('wish').value.trim();
+  var t='Здравствуйте! Хочу забронировать зал в «Кафе де Пари».\n'+
+    'Повод: '+type+'\nДата: '+fmt(document.getElementById('date').value)+'\nГостей: '+g+
+    (w?'\nПожелания: '+w:'')+(n?'\n\n'+n:'');
+  document.getElementById('msg').textContent=t;
+  document.getElementById('waBtn').href='https://wa.me/79774470505?text='+encodeURIComponent(t);
+}
+['date','guests','name','wish'].forEach(function(id){document.getElementById(id).addEventListener('input',build)});
+document.getElementById('reqForm').addEventListener('submit',function(e){e.preventDefault()});
+function copy(btn,text,done){
+  try{navigator.clipboard.writeText(text).then(function(){btn.textContent=done},function(){btn.textContent='Выделите текст вручную'});}
+  catch(e){btn.textContent='Выделите текст вручную';}
+}
+document.getElementById('copyMsg').addEventListener('click',function(e){copy(e.currentTarget,document.getElementById('msg').textContent,'Скопировано')});
+document.getElementById('copyPhone').addEventListener('click',function(e){copy(e.currentTarget,'+79774470505','Скопировано')});
+build();
+</script>
+
+</body>
+</html>
